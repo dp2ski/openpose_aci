@@ -1,0 +1,17 @@
+#openpose docker image from garyfeng
+
+BootStrap: docker
+From: garyfeng/docker-openpose
+
+%runscript 
+
+$post
+    #------------------------------------------------------------------------------
+    # Create local binding points for our ICS-ACI
+    #------------------------------------------------------------------------------
+    mkdir -p /storage/home
+    mkdir -p /storage/work
+    mkdir -p /gpfs/scratch
+    mkdir -p /gpfs/group
+    mkdir -p /var/spool/torque
+#
