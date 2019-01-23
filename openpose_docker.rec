@@ -5,7 +5,7 @@ From: garyfeng/docker-openpose
 
 %runscript 
 
-$post
+%post
     #------------------------------------------------------------------------------
     # Create local binding points for our ICS-ACI
     #------------------------------------------------------------------------------
@@ -14,4 +14,3 @@ $post
     mkdir -p /gpfs/scratch
     mkdir -p /gpfs/group
     mkdir -p /var/spool/torque
-#
