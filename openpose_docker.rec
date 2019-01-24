@@ -5,7 +5,23 @@ From: garyfeng/docker-openpose
 
 %runscript 
 
+%environment
+    # nvidia driver libs specific cuda version libs are mounted by --bind command at run
+    # required for GPU enabled container
+    SHELL=/bin/bash
+    CPATH="/cuda/include:$CPATH"
+    PATH="/cuda/bin:/nvidia:$PATH"
+    LD_LIBRARY_PATH="/cuda/lib64:/nvidia:$LD_LIBRARY_PATH"
+    CUDA_HOME="/cuda"
+    export PATH LD_LIBRARY_PATH CPATH CUDA_HOME
+    export LD_PRELOAD=$LD_PRELOAD:/usr/lib/libopentextdlfaker.so.3:/usr/lib64/libopentextdlfaker.so.3
+
 %post
+
+    #install nvidia driver (current system version: 390.30)
+    add-apt-repository -y ppa:graphics-drivers/ppa
+    apt-get install -y nvidia-390-dev
+
     #------------------------------------------------------------------------------
     # Create local binding points for our ICS-ACI
     #------------------------------------------------------------------------------
@@ -14,3 +30,4 @@ From: garyfeng/docker-openpose
     mkdir -p /gpfs/scratch
     mkdir -p /gpfs/group
     mkdir -p /var/spool/torque
+    mkdir -p /usr/bin/nvidia-smi
