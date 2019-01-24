@@ -19,6 +19,7 @@ From: garyfeng/docker-openpose
 %post
 
     #install nvidia driver (current system version: 390.30)
+    apt-get install -y software-properties-common
     add-apt-repository -y ppa:graphics-drivers/ppa
     apt-get install -y nvidia-390-dev
 
