@@ -33,11 +33,11 @@ From: nvidia/cuda:8.0-cudnn5-devel
     unzip master.zip; rm master.zip
 
     cd /openpose-master
-    sed -i 's/\<sudo chmod +x $1\>//g' scripts/ubuntu/install_caffe_and_openpose_if_cuda8.sh; \
-    sed -i 's/\<sudo chmod +x $1\>//g' scripts/ubuntu/install_openpose_if_cuda8.sh; \
+    sed -i 's/\<sudo chmod +x $1\>//g' scripts/ubuntu_deprecated/install_caffe_and_openpose_if_cuda8.sh; \
+    sed -i 's/\<sudo chmod +x $1\>//g' scripts/ubuntu_deprecated/install_openpose_if_cuda8.sh; \
     sed -i 's/\<sudo -H\>//g' 3rdparty/caffe/install_caffe_if_cuda8.sh; \
     sed -i 's/\<sudo\>//g' 3rdparty/caffe/install_caffe_if_cuda8.sh; \
-    sync; sleep 1; ./scripts/ubuntu/install_caffe_and_openpose_if_cuda8.sh
+    sync; sleep 1; ./scripts/ubuntu_deprecated/install_caffe_and_openpose_if_cuda8.sh
 
 
     #------------------------------------------------------------------------------
