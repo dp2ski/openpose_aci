@@ -22,7 +22,11 @@ From: nvidia/cuda:8.0-cudnn5-devel
     apt-get update -y && apt-get upgrade -y
     apt-get install wget unzip lsof apt-utils lsb-core -y
     apt-get install libatlas-base-dev -y
-    apt-get install libopencv-dev python-opencv python-pip -y   
+    apt-get install libopencv-dev python-opencv python-pip -y
+    apt-get install software-properties-common
+    add-apt-repository ppa:add-apt-repository ppa:george-edison55/cmake-3.x
+    apt-get update
+    apt-get install cmake  
 
     #install nvidia driver (current system version: 390.30)
     apt-get install -y software-properties-common
@@ -57,7 +61,7 @@ From: nvidia/cuda:8.0-cudnn5-devel
     mkdir -p /gpfs/scratch
     mkdir -p /gpfs/group
     mkdir -p /var/spool/torque
-    mkdir -p /usr/bin/nvidia-smi
+    #mkdir -p /usr/bin/nvidia-smi
 
 
     #cd /openpose-master
