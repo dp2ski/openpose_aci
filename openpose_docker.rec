@@ -1,26 +1,14 @@
-#openpose docker image from garyfeng
-
 BootStrap: docker
-From: nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04   
-# start with the nvidia container for cuda 8 with cudnn 5
+From: garyfeng/docker-openpose
 
 
-%runscript 
-
+%runscript
+    exec /openpose-master/build/examples/openpose/openpose.bin "$@"
 %environment
-    # nvidia driver libs specific cuda version libs are mounted by --bind command at run
-    # required for GPU enabled container
-    SHELL=/bin/bash
-    CPATH="/cuda/include:$CPATH"
-    PATH="/cuda/bin:/nvidia:$PATH"
-    LD_LIBRARY_PATH="/cuda/lib64:/nvidia:$LD_LIBRARY_PATH"
-    CUDA_HOME="/cuda"
-    export PATH LD_LIBRARY_PATH CPATH CUDA_HOME
-    export LD_PRELOAD=$LD_PRELOAD:/usr/lib/libopentextdlfaker.so.3:/usr/lib64/libopentextdlfaker.so.3
 
 %post
+    #need to install correct gpu drivers
     apt-get update
-    apt-get install lsof lsb-core -y
     apt-get install -y --no-install-recommends \
     build-essential \
     apt-utils \
@@ -52,34 +40,11 @@ From: nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
     libcanberra-gtk-module \
     libcanberra-gtk3-module \
     mesa-utils \
-    apt-get install libatlas-base-dev -y
-    apt-get install libopencv-dev python-opencv python-pip -y 
-
-    #install nvidia driver (current system version: 390.30)
-    apt-get install -y software-properties-common
+    
+    # install nvidia driver (current system version: 390.30)
     add-apt-repository -y ppa:graphics-drivers/ppa
     apt-get install -y nvidia-390-dev
 
-    wget https://github.com/CMU-Perceptual-Computing-Lab/openpose/archive/master.zip; \
-    unzip master.zip; rm master.zip
-
-    cd /openpose-master && \
-    mkdir -p build && cd build && \
-    cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_CAFFE=OFF \
-      -DBUILD_EXAMPLES=ON \
-      -DBUILD_DOCS=ON \
-      -DBUILD_SHARED_LIBS=ON \
-      -DDOWNLOAD_BODY_25_MODEL=ON \
-      -DDOWNLOAD_BODY_COCO_MODEL=ON \
-      -DDOWNLOAD_BODY_MPI_MODEL=ON \
-      -DDOWNLOAD_HAND_MODEL=ON \
-      -DWITH_3D_RENDERER:BOOL=OFF \
-      -DCaffe_INCLUDE_DIRS="/opt/caffe/include" \
-      -DCaffe_LIBS="/opt/caffe/build/lib/libcaffe.so" \
-      -DBUILD_PYTHON=ON ../ && \
-    make all -j"$(nproc)"
     #------------------------------------------------------------------------------
     # Create local binding points for our ICS-ACI
     #------------------------------------------------------------------------------
@@ -88,13 +53,3 @@ From: nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
     mkdir -p /gpfs/scratch
     mkdir -p /gpfs/group
     mkdir -p /var/spool/torque
-    #mkdir -p /usr/bin/nvidia-smi
-
-
-    #cd /openpose-master
-    #sed -i 's/\<sudo chmod +x $1\>//g' scripts/ubuntu_deprecated/install_caffe_and_openpose_if_cuda8.sh; \
-    #sed -i 's/\<sudo chmod +x $1\>//g' scripts/ubuntu_deprecated/install_openpose_if_cuda8.sh; \
-    #sed -i 's/\<sudo -H\>//g' 3rdparty/caffe/install_caffe_if_cuda8.sh; \
-    #sed -i 's/\<sudo\>//g' 3rdparty/caffe/install_caffe_if_cuda8.sh; \
-    #sync; sleep 1; ./scripts/ubuntu_deprecated/install_caffe_and_openpose_if_cuda8.sh
-
