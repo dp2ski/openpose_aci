@@ -3,7 +3,8 @@ From: garyfeng/docker-openpose
 
 
 %runscript
-    exec /openpose-master/build/examples/openpose/openpose.bin "$@"
+    cd /openpose-master
+    exec /build/examples/openpose/openpose.bin "$@"
 %environment
 
 %post
